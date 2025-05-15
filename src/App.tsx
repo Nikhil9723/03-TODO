@@ -1,10 +1,27 @@
-function App() {
+import { Outlet, Route, Routes } from "react-router-dom";
+import "./App.css";
+import Layout from "./components/layout/Layout";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Todo from "./pages/Todo";
+import { TodoProvider } from "./store/Context";
+import EditTodo from "./pages/EditTodo";
 
+function App() {
   return (
-    <>
-      <h1>Hello Todo</h1>
-    </>
-  )
+    <TodoProvider>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/todo" element={<Outlet />}>
+            <Route path=":id" element={<EditTodo />}></Route>
+            <Route path="" element={<Todo />}></Route>
+          </Route>
+        </Route>
+      </Routes>
+    </TodoProvider>
+  );
 }
 
-export default App
+export default App;
