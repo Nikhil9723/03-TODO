@@ -4,6 +4,8 @@ import TodoItems from "../components/TodoItems";
 import { useSearchParams } from "react-router";
 import getTimestamp from "../utils/TimeStamp";
 import type { TodoList } from "../types/reducerTypes";
+import { KeyboardEvent, Reducer } from "../constants/constants";
+import type { EventType } from "./type";
 
 export default function Todo() {
   const context = useContext(TodoContext);
@@ -18,10 +20,9 @@ export default function Todo() {
     item.title.toLowerCase().includes(filterdTitle),
   );
 
-  function handelAddTodo() {
-    // console.log(todoTitle.current?.value);
+  function AddTodoItems() {
     dispatch({
-      type: "add_todos",
+      type: Reducer.ADD_TODOS,
       payload: {
         id: crypto.randomUUID(),
         title: todoTitle.current!.value,
@@ -29,34 +30,64 @@ export default function Todo() {
         timeStamp: getTimestamp(),
       },
     });
+    const currentItem = todoTitle.current;
+    if (currentItem) {
+      currentItem.value = "";
+    }
+  }
+
+  function handelAddTodo(e: EventType) {
+    if ("key" in e) {
+      if (e.key === KeyboardEvent.ENTER) {
+        AddTodoItems();
+      } else if ("clientX" in e) {
+        AddTodoItems();
+      }
+    }
   }
 
   function handelFilterChange() {
     const value: string = searchInput.current!.value;
-    setSearchParam({ title: value });
+    if (value) {
+      setSearchParam({ title: value });
+    } else {
+      setSearchParam("");
+    }
   }
+
   return (
-    <div className="m-5">
-      <div>
+    <div className="container mx-auto p-6">
+      <div className="mb-4">
         <input
           ref={searchInput}
           onChange={handelFilterChange}
           type="text"
           value={filterdTitle}
           placeholder="Search for your todo"
+          className="w-full p-3 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
         />
       </div>
-      <h1 className="">To Do List</h1>
-      <div className="flex gap-2 w-full">
+
+      <h1 className="text-3xl font-semibold text-center mb-4 text-gray-800">
+        To Do List
+      </h1>
+
+      <div className="flex gap-4 mb-4 w-full">
         <input
+          onKeyDown={handelAddTodo}
           ref={todoTitle}
           type="text"
-          className="border-2 border-black flex-1"
+          className="w-full p-3 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+          placeholder="Enter new todo"
         />
-        <button onClick={handelAddTodo} className="border-2 border-black">
+        <button
+          onClick={handelAddTodo}
+          className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+        >
           ADD
         </button>
       </div>
+
       <TodoItems filterTodos={filterTodos} />
     </div>
   );

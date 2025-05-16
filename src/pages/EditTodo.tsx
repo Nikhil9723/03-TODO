@@ -3,7 +3,8 @@ import { TodoContext } from "../store/Context";
 import type { TodoList } from "../types/reducerTypes";
 import { useContext, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { Reducer, Status } from "../constants/constants";
+import back from "../assets/back.svg";
 interface EditTodoId {
   [id: string]: string;
 }
@@ -13,7 +14,6 @@ export default function EditTodo() {
 
   const { todos, dispatch } = useContext(TodoContext);
   const editTodoId = useParams<EditTodoId>();
-  console.log(editTodoId.id, "Hii");
   const editableTitle = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
@@ -24,57 +24,95 @@ export default function EditTodo() {
   function handelOnBlur(editId: string) {
     const currentTime = getTimestamp();
     dispatch({
-      type: "Edit_todos",
+      type: Reducer.EDIT_TODOS,
       payload: {
         id: editId,
         title: editableTitle.current!.value,
         timeStamp: currentTime,
       },
     });
-    navigate("/todo");
   }
 
   function handelPendingTask() {
     dispatch({
-      type: "MARK_AS_DONE",
+      type: Reducer.MARK_AS_DONE,
       payload: { id: editTodoId.id!, status: "Completed" },
     });
   }
 
+  function handleBack() {
+    navigate("/todo"); // This goes to the previous page
+  }
+
   return (
     <>
-      <div>
+      <div className="max-w-3xl mx-auto p-6">
         {todos.map((item: TodoList, index: number) => {
           if (item.id === editTodoId.id) {
             return (
-              <div key={item.id} className="border-2 border-black w-full m-2">
-                <div className="flex flex-col">
-                  id:{index + 1}
+              <div
+                key={item.id}
+                className="bg-white border border-gray-200 rounded-lg shadow-lg p-6"
+              >
+                <div className="flex flex-col space-y-4">
+                  <p className="text-sm text-gray-500">ID: {index + 1}</p>
                   {isEditing ? (
-                    <p>
-                      title:
-                      {
-                        <input
-                          onBlur={() => handelOnBlur(editTodoId.id!)}
-                          ref={editableTitle}
-                          type="text"
-                          className="border-2 border-black"
-                        />
-                      }
-                    </p>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Title:
+                      </label>
+                      <input
+                        onBlur={() => handelOnBlur(editTodoId.id!)}
+                        ref={editableTitle}
+                        type="text"
+                        className="w-full px-4 py-2 mt-1 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        defaultValue={item.title}
+                      />
+                    </div>
                   ) : (
-                    <p>title: {item.title}</p>
+                    <p className="text-lg font-semibold text-gray-800">
+                      Title: {item.title}
+                    </p>
                   )}
-                  <p>{item.status}</p>
-                  <p>{item.timeStamp}</p>
+                  <p className="text-md text-gray-600">Status: {item.status}</p>
+                  <p className="text-sm text-gray-400">
+                    Created: {item.timeStamp}
+                  </p>
                 </div>
-                <button
-                  onClick={handelPendingTask}
-                  className="border-2 border-black"
-                >
-                  Mark as Done
-                </button>
-                <button onClick={handelEditTodo}>Edit</button>
+
+                <div className="flex justify-center gap-4 box-border mt-6">
+                  <button
+                    onClick={handelEditTodo}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition w-full sm:w-auto"
+                  >
+                    Edit
+                  </button>
+
+                  {item.status === Status.PENDING ? (
+                    <button
+                      onClick={handelPendingTask}
+                      className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition w-full sm:w-auto"
+                    >
+                      Mark as Done
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handelPendingTask}
+                      className="px-6 py-3 bg-gray-600 text-white rounded-md hover:cursor-not-allowed transition w-full sm:w-auto"
+                    >
+                      Mark as Done
+                    </button>
+                  )}
+                </div>
+                <div className="flex justify-center mt-4">
+                  <button
+                    onClick={handleBack}
+                    className="flex box-border w-full px-6 py-3 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition sm:w-auto"
+                  >
+                    <img className="w-7" src={back} />
+                    Back
+                  </button>
+                </div>
               </div>
             );
           }

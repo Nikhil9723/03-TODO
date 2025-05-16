@@ -9,3 +9,7 @@ export const enum Reducer {
 export const enum Status {
   PENDING = "pending",
 }
+
+export const enum KeyboardEvent {
+  ENTER = "Enter",
+}
