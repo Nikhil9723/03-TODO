@@ -2,20 +2,19 @@ import getTimestamp from "../utils/TimeStamp";
 import { TodoContext } from "../store/Context";
 import type { TodoList } from "../types/reducerTypes";
 import { useContext, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 interface EditTodoId {
   [id: string]: string;
 }
 
 export default function EditTodo() {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
 
   const { todos, dispatch } = useContext(TodoContext);
   const editTodoId = useParams<EditTodoId>();
   console.log(editTodoId.id, "Hii");
   const editableTitle = useRef<HTMLInputElement | null>(null);
-  const navigate = useNavigate();
 
   function handelEditTodo() {
     setIsEditing(true);
@@ -23,6 +22,7 @@ export default function EditTodo() {
 
   function handelOnBlur(editId: string) {
     const currentTime = getTimestamp();
+    setIsEditing(false);
     dispatch({
       type: "Edit_todos",
       payload: {
@@ -31,7 +31,6 @@ export default function EditTodo() {
         timeStamp: currentTime,
       },
     });
-    navigate("/todo");
   }
 
   function handelPendingTask() {
