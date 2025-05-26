@@ -21,6 +21,12 @@ export default function Todo() {
   );
 
   function AddTodoItems() {
+    if (!todoTitle.current) {
+      return;
+    }
+    if (todoTitle.current.value === "") {
+      return;
+    }
     dispatch({
       type: Reducer.ADD_TODOS,
       payload: {
@@ -40,9 +46,10 @@ export default function Todo() {
     if ("key" in e) {
       if (e.key === KeyboardEvent.ENTER) {
         AddTodoItems();
-      } else if ("clientX" in e) {
-        AddTodoItems();
       }
+    } else if ("clientX" in e) {
+      console.log("Firee");
+      AddTodoItems();
     }
   }
 
