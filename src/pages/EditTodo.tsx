@@ -1,7 +1,7 @@
 import getTimestamp from "../utils/TimeStamp";
 import { TodoContext } from "../store/Context";
 import type { TodoList } from "../types/reducerTypes";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Reducer, Status } from "../constants/constants";
 import back from "../assets/back.svg";
@@ -10,7 +10,7 @@ interface EditTodoId {
 }
 
 export default function EditTodo() {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
 
   const { todos, dispatch } = useContext(TodoContext);
   const editTodoId = useParams<EditTodoId>();
@@ -20,6 +20,12 @@ export default function EditTodo() {
   function handelEditTodo() {
     setIsEditing(true);
   }
+
+  useEffect(() => {
+    if (isEditing) {
+      editableTitle.current?.focus();
+    }
+  }, [isEditing]);
 
   function handelOnBlur(editId: string) {
     const currentTime = getTimestamp();
@@ -31,6 +37,7 @@ export default function EditTodo() {
         timeStamp: currentTime,
       },
     });
+    setIsEditing(false);
   }
 
   function handelPendingTask() {
@@ -83,7 +90,7 @@ export default function EditTodo() {
                 <div className="flex justify-center gap-4 box-border mt-6">
                   <button
                     onClick={handelEditTodo}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition w-full sm:w-auto"
+                    className="px-6 py-2 box-border bg-blue-600 text-white rounded-md hover:bg-blue-700 transition w-full sm:w-auto"
                   >
                     Edit
                   </button>
