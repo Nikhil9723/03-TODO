@@ -1,8 +1,9 @@
-import getTimestamp from "../utils/TimeStamp";
-import { TodoContext } from "../store/Context";
-import type { TodoList } from "../types/reducerTypes";
-import { useContext, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { TodoContext } from '../store/Context';
+import type { TodoList } from '../types/reducerTypes';
+import getTimestamp from '../utils/TimeStamp';
 
 interface EditTodoId {
   [id: string]: string;
@@ -13,7 +14,6 @@ export default function EditTodo() {
 
   const { todos, dispatch } = useContext(TodoContext);
   const editTodoId = useParams<EditTodoId>();
-  console.log(editTodoId.id, "Hii");
   const editableTitle = useRef<HTMLInputElement | null>(null);
 
   function handelEditTodo() {
@@ -23,21 +23,25 @@ export default function EditTodo() {
   function handelOnBlur(editId: string) {
     const currentTime = getTimestamp();
     setIsEditing(false);
-    dispatch({
-      type: "Edit_todos",
-      payload: {
-        id: editId,
-        title: editableTitle.current!.value,
-        timeStamp: currentTime,
-      },
-    });
+    if (editableTitle.current) {
+      dispatch({
+        type: 'Edit_todos',
+        payload: {
+          id: editId,
+          title: editableTitle.current.value,
+          timeStamp: currentTime,
+        },
+      });
+    }
   }
 
   function handelPendingTask() {
-    dispatch({
-      type: "MARK_AS_DONE",
-      payload: { id: editTodoId.id!, status: "Completed" },
-    });
+    if (editTodoId.id) {
+      dispatch({
+        type: 'MARK_AS_DONE',
+        payload: { id: editTodoId.id, status: 'Completed' },
+      });
+    }
   }
 
   return (
@@ -46,8 +50,8 @@ export default function EditTodo() {
         {todos.map((item: TodoList, index: number) => {
           if (item.id === editTodoId.id) {
             return (
-              <div key={item.id} className="border-2 border-black w-full m-2">
-                <div className="flex flex-col">
+              <div key={item.id} className='border-2 border-black w-full m-2'>
+                <div className='flex flex-col'>
                   id:{index + 1}
                   {isEditing ? (
                     <p>
@@ -56,8 +60,8 @@ export default function EditTodo() {
                         <input
                           onBlur={() => handelOnBlur(editTodoId.id!)}
                           ref={editableTitle}
-                          type="text"
-                          className="border-2 border-black"
+                          type='text'
+                          className='border-2 border-black'
                         />
                       }
                     </p>
@@ -69,7 +73,7 @@ export default function EditTodo() {
                 </div>
                 <button
                   onClick={handelPendingTask}
-                  className="border-2 border-black"
+                  className='border-2 border-black'
                 >
                   Mark as Done
                 </button>
