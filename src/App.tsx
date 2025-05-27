@@ -6,6 +6,7 @@ import EditTodo from './pages/EditTodo';
 import Home from './pages/Home';
 import Todo from './pages/Todo';
 import { TodoProvider } from './store/ContextProvider';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path='' element={<Todo />}></Route>
           </Route>
         </Route>
+        <Route path='/*' element={<NotFound />} />
       </Routes>
     </TodoProvider>
   );
