@@ -4,9 +4,9 @@ import Layout from './components/layout/Layout';
 import About from './pages/About';
 import EditTodo from './pages/EditTodo';
 import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 import Todo from './pages/Todo';
 import { TodoProvider } from './store/ContextProvider';
-import NotFound from './pages/NotFound';
 
 function App() {
   return (
