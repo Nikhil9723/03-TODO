@@ -1,12 +1,13 @@
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Outlet, Route, Routes } from "react-router-dom";
 
-import Layout from './components/layout/Layout';
-import About from './pages/About';
-import EditTodo from './pages/EditTodo';
-import Home from './pages/Home';
-import NotFound from './pages/NotFound';
-import Todo from './pages/Todo';
-import { TodoProvider } from './store/ContextProvider';
+import Layout from "./components/layout/Layout";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Todo from "./pages/Todo";
+import EditTodo from "./pages/EditTodo";
+import { TodoProvider } from "./store/ContextProvider";
+import NotFound from "./pages/NotFound";
+
 
 function App() {
   return (
