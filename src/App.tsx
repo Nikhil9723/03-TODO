@@ -3,8 +3,8 @@ import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Todo from "./pages/Todo";
-import { TodoProvider } from "./store/Context";
 import EditTodo from "./pages/EditTodo";
+import { TodoProvider } from "./store/TodoProvider";
 
 function App() {
   return (
