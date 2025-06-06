@@ -6,7 +6,7 @@ import About from "./pages/About";
 import Todo from "./pages/Todo";
 import EditTodo from "./pages/EditTodo";
 import { Provider } from "react-redux";
-import store from "./store/sotre";
+import store from "./store/store";
 
 function App() {
   return (

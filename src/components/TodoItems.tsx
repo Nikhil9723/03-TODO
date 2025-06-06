@@ -3,7 +3,7 @@ import type { TodoList } from "../types/reducerTypes";
 import { Link } from "react-router-dom";
 import { Status } from "../constants/constants";
 import { useDispatch } from "react-redux";
-import { deleteTodo, markAsDone } from "../store/sotre";
+import { deleteTodo, markAsDone } from "../store/store";
 
 type ChildType = {
   filterTodos: TodoList[];

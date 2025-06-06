@@ -6,7 +6,7 @@ import type { TodoList } from "../types/reducerTypes";
 import { KeyboardEvent } from "../constants/constants";
 import type { EventType } from "./type";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, type StateType } from "../store/sotre";
+import { addTodo, type StateType } from "../store/store";
 
 export default function Todo() {
   const [searchParam, setSearchParam] = useSearchParams();

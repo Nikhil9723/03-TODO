@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Status } from "../constants/constants";
 import back from "../assets/back.svg";
-import { editTodo, markAsDone, type StateType } from "../store/sotre";
+import { editTodo, markAsDone, type StateType } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 interface EditTodoId {
   [id: string]: string;
