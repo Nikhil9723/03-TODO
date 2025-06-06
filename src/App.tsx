@@ -1,14 +1,16 @@
 import { Outlet, Route, Routes } from "react-router-dom";
+
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Todo from "./pages/Todo";
-import { TodoProvider } from "./store/Context";
 import EditTodo from "./pages/EditTodo";
+import { Provider } from "react-redux";
+import store from "./store/sotre";
 
 function App() {
   return (
-    <TodoProvider>
+    <Provider store={store}>
       <Routes>
         <Route element={<Layout />}>
           <Route index path="/" element={<Home />} />
@@ -19,7 +21,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
-    </TodoProvider>
+    </Provider>
   );
 }
 

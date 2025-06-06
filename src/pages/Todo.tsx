@@ -1,16 +1,18 @@
-import { useContext, useRef } from "react";
-import { TodoContext } from "../store/Context";
+import { useRef } from "react";
 import TodoItems from "../components/TodoItems";
 import { useSearchParams } from "react-router";
 import getTimestamp from "../utils/TimeStamp";
 import type { TodoList } from "../types/reducerTypes";
-import { KeyboardEvent, Reducer } from "../constants/constants";
+import { KeyboardEvent } from "../constants/constants";
 import type { EventType } from "./type";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo, type StateType } from "../store/sotre";
 
 export default function Todo() {
-  const context = useContext(TodoContext);
   const [searchParam, setSearchParam] = useSearchParams();
-  const { todos, dispatch } = context;
+
+  const dispatch = useDispatch();
+  const todos = useSelector((state: StateType) => state.Todo);
 
   const todoTitle = useRef<HTMLInputElement | null>(null);
   const searchInput = useRef<HTMLInputElement>(null);
@@ -27,15 +29,15 @@ export default function Todo() {
     if (todoTitle.current.value === "") {
       return;
     }
-    dispatch({
-      type: Reducer.ADD_TODOS,
-      payload: {
+    dispatch(
+      addTodo({
         id: crypto.randomUUID(),
         title: todoTitle.current!.value,
         status: "pending",
         timeStamp: getTimestamp(),
-      },
-    });
+      }),
+    );
+
     const currentItem = todoTitle.current;
     if (currentItem) {
       currentItem.value = "";

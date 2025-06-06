@@ -1,18 +1,20 @@
 import getTimestamp from "../utils/TimeStamp";
-import { TodoContext } from "../store/Context";
 import type { TodoList } from "../types/reducerTypes";
-import { useContext, useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Reducer, Status } from "../constants/constants";
+import { Status } from "../constants/constants";
 import back from "../assets/back.svg";
+import { editTodo, markAsDone, type StateType } from "../store/sotre";
+import { useDispatch, useSelector } from "react-redux";
 interface EditTodoId {
   [id: string]: string;
 }
 
 export default function EditTodo() {
   const [isEditing, setIsEditing] = useState(true);
+  const dispatch = useDispatch();
+  const todos = useSelector((state: StateType) => state.Todo);
 
-  const { todos, dispatch } = useContext(TodoContext);
   const editTodoId = useParams<EditTodoId>();
   const editableTitle = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
@@ -29,22 +31,18 @@ export default function EditTodo() {
 
   function handelOnBlur(editId: string) {
     const currentTime = getTimestamp();
-    dispatch({
-      type: Reducer.EDIT_TODOS,
-      payload: {
+    dispatch(
+      editTodo({
         id: editId,
         title: editableTitle.current!.value,
         timeStamp: currentTime,
-      },
-    });
+      }),
+    );
     setIsEditing(false);
   }
 
   function handelPendingTask() {
-    dispatch({
-      type: Reducer.MARK_AS_DONE,
-      payload: { id: editTodoId.id!, status: "Completed" },
-    });
+    dispatch(markAsDone({ id: editTodoId.id!, status: "Completed" }));
   }
 
   function handleBack() {
