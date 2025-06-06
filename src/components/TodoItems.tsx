@@ -1,23 +1,25 @@
 import type { TodoList } from "../types/reducerTypes";
-
+import { TodoContext } from "../store/Context";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Status } from "../constants/constants";
-import { useDispatch } from "react-redux";
-import { deleteTodo, markAsDone } from "../store/sotre";
+import { Reducer, Status } from "../constants/constants";
 
 type ChildType = {
   filterTodos: TodoList[];
 };
 
 export default function TodoItems({ filterTodos }: ChildType) {
-  const dispatch = useDispatch();
+  const { dispatch } = useContext(TodoContext);
 
   function handleDelete(targetId: string) {
-    dispatch(deleteTodo({ id: targetId }));
+    dispatch({ type: Reducer.DELETE_TODOS, payload: { id: targetId } });
   }
 
   function handleEditStatus(targetId: string) {
-    dispatch(markAsDone({ id: targetId, status: "Completed" }));
+    dispatch({
+      type: Reducer.MARK_AS_DONE,
+      payload: { id: targetId, status: "Completed" },
+    });
   }
 
   return (

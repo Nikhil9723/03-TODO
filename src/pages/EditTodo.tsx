@@ -1,10 +1,10 @@
 import getTimestamp from "../utils/TimeStamp";
-import { TodoContext } from "../store/Context";
 import type { TodoList } from "../types/reducerTypes";
 import { useContext, useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Reducer, Status } from "../constants/constants";
 import back from "../assets/back.svg";
+import { TodoContext } from "../store/Context";
 interface EditTodoId {
   [id: string]: string;
 }
